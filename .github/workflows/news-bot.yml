@@ -1,9 +1,8 @@
 name: News Bot Scheduled Test
 
 on:
-  push:
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "23 6 * * *"
   workflow_dispatch:
 
 jobs:

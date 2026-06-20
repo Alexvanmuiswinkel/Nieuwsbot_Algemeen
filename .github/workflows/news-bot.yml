@@ -1,4 +1,4 @@
-name: Daily News Bot Test
+name: News Bot Scheduled Test
 
 on:
   schedule:

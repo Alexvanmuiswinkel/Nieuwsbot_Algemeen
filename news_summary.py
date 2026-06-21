@@ -28,8 +28,10 @@ load_dotenv(Path(__file__).parent / ".env")
 # ── Configuratie ──────────────────────────────────────────────────────────────
 
 RSS_FEEDS = {
-    "NOS Algemeen": "https://feeds.nos.nl/nosnieuwsalgemeen",
-    "NU.nl Algemeen": "https://www.nu.nl/rss/algemeen",
+    "Financial Times": "https://www.ft.com/rss/home",
+    "Reuters Business": "https://www.reutersagency.com/feed/?best-topics=business-finance&post_type=best",
+    "BBC Business": "https://feeds.bbci.co.uk/news/business/rss.xml",
+    "The Economist": "https://www.economist.com/latest/rss.xml",
 }
 
 MAX_ITEMS_PER_FEED = 6
@@ -68,22 +70,42 @@ def summarize_news(raw_news: str) -> str:
 
     today = datetime.now().strftime("%d-%m-%Y")
 
-    prompt = f"""
-Je bent mijn persoonlijke nieuwsassistent.
+    prompt = prompt = f"""
+Je bent mijn persoonlijke ochtendbriefing-assistent.
 
-Maak een beknopte dagelijkse nieuwssamenvatting voor Telegram.
+Maak een duidelijke Nederlandse briefing op basis van de artikelen hieronder.
 
-Datum: {today}
+Focus vooral op:
+- economie
+- financiële markten
+- geopolitiek
+- technologie
+- bedrijven
+- beleid en centrale banken
 
-Regels:
-- Schrijf in het Nederlands
-- Maak 6 tot 8 nieuwsitems
-- Per nieuwsitem:
-  1. één duidelijke titel
-  2. twee korte zinnen uitleg
-  3. waarom dit belangrijk is
-- Gebruik eenvoudige taal
-- Voeg relevante links toe
+Vermijd:
+- celebritynieuws
+- sport
+- clickbait
+- kleine incidenten zonder bredere impact
+
+Gebruik deze structuur:
+
+📅 Ochtendbriefing – {today}
+
+**Vandaag in het kort**
+Geef 3 bullets met de belangrijkste rode draad.
+
+**Belangrijkste ontwikkelingen**
+Kies maximaal 5 items.
+Per item:
+- korte titel
+- 2 zinnen uitleg
+- "Waarom dit belangrijk is:" 1 zin
+- link
+
+**Wat je moet onthouden**
+Sluit af met 2 kernpunten.
 
 Nieuwsberichten:
 {raw_news}

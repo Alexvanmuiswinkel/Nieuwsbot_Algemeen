@@ -53,7 +53,7 @@ DEDUP_TITLE_SIMILARITY = 0.72  # boven deze drempel beschouwen we titels als het
 CACHE_FILE = Path(__file__).parent / "seen_articles.json"
 CACHE_RETENTION_DAYS = 5  # hoe lang een link/titel "al gezien" blijft
 
-MODEL = "gpt-4.1"  # zet evenueel terug naar gpt-4.1-mini voor lagere kosten
+MODEL = "gpt-4.1-mini"  # zet evenueel terug naar gpt-4.1-mini voor lagere kosten
 
 
 # ── Seen-cache ──────────────────────────────────────────────────────────────

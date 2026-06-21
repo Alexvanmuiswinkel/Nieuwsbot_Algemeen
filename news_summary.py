@@ -34,7 +34,7 @@ RSS_FEEDS = {
     "The Economist": "https://www.economist.com/latest/rss.xml",
 }
 
-MAX_ITEMS_PER_FEED = 6
+MAX_ITEMS_PER_FEED = 5
 MAX_CHARS_PER_ITEM = 300
 
 
@@ -70,10 +70,19 @@ def summarize_news(raw_news: str) -> str:
 
     today = datetime.now().strftime("%d-%m-%Y")
 
-    prompt = prompt = prompt = f"""
+    prompt = f"""
 Je bent mijn persoonlijke ochtendbriefing-assistent.
 
-Maak een cleane Nederlandse ochtendbriefing op basis van de artikelen hieronder.
+Maak een cleane Nederlandse ochtendbriefing op basis van de nieuwsitems hieronder.
+
+Belangrijk:
+Sommige bronnen bevatten alleen een titel, korte teaser en link.
+Doe niet alsof je het volledige artikel hebt gelezen.
+Baseer je alleen op de beschikbare titel, teaser en link.
+Formuleer beperkt beschikbare informatie als signaal, niet als harde conclusie.
+
+Doel:
+Ik wil in 2 minuten een breed overzicht krijgen van de belangrijkste economische, geopolitieke, business-, technologie- en marktontwikkelingen.
 
 Gebruik exact deze structuur:
 
@@ -81,61 +90,58 @@ Gebruik exact deze structuur:
 
 IN 30 SECONDEN
 
-• [Eerste hoofdlijn in één zin]
-• [Tweede hoofdlijn in één zin]
-• [Derde hoofdlijn in één zin]
+• [Eerste rode draad in één zin]
+• [Tweede rode draad in één zin]
+• [Derde rode draad in één zin]
 
-TOP 5
+TOP 10 SIGNALEN
 
 1. [Korte titel]
-[Leg in 1 tot 2 korte zinnen uit wat er is gebeurd.]
-Impact: [Leg in 1 korte zin uit waarom dit belangrijk is.]
-[Plaats hier alleen de URL, zonder markdown en zonder het woord Link]
+[Korte uitleg in maximaal 1 zin.]
+Impact: [Waarom dit relevant kan zijn in maximaal 1 zin.]
+[Zet hier alleen de URL]
 
 2. [Korte titel]
-[Leg in 1 tot 2 korte zinnen uit wat er is gebeurd.]
-Impact: [Leg in 1 korte zin uit waarom dit belangrijk is.]
-[Plaats hier alleen de URL, zonder markdown en zonder het woord Link]
+[Korte uitleg in maximaal 1 zin.]
+Impact: [Waarom dit relevant kan zijn in maximaal 1 zin.]
+[Zet hier alleen de URL]
+
+Herhaal dit tot maximaal 10 items.
 
 OM TE ONTHOUDEN
 
 • [Belangrijkste takeaway]
 • [Tweede takeaway]
 
+Selectieregels:
+• Kies maximaal 10 items
+• Geef prioriteit aan economie, geopolitiek, markten, technologie, bedrijven en beleid
+• Vermijd sport, celebritynieuws, lifestyle en kleine incidenten
+• Neem FT/Economist-items vooral mee als signaal van wat op de agenda staat
+• Gebruik open bronnen met meer context voor iets meer duiding
+• Als informatie beperkt is, schrijf neutraal: "Dit signaleert..." of "Dit wijst mogelijk op..."
+
 Strikte opmaakregels:
-- Gebruik geen markdown
-- Gebruik nooit ** of __
-- Gebruik geen streepjes als bullets
-- Gebruik alleen • als bullet
-- Gebruik geen [Link](url)
-- Gebruik niet het woord "Link:"
-- Zet de URL gewoon los op een aparte regel
-- Houd veel witruimte tussen secties
-- Schrijf rustig, zakelijk en simpel
-- Geen afsluiting zoals "Fijne dag"
-- Gebruik alleen informatie uit de aangeleverde artikelen
+• Gebruik geen markdown
+• Gebruik nooit ** of __
+• Gebruik geen streepjes als bullets
+• Gebruik alleen • als bullet
+• Gebruik geen [Link](url)
+• Gebruik niet het woord "Link:"
+• Zet URL's los op een aparte regel
+• Houd witruimte tussen secties
+• Schrijf kort, rustig, zakelijk en simpel
+• Geen afsluiting zoals "Fijne dag"
+• Geen meningen of speculatie buiten de beschikbare informatie
 
-Focus op:
-• economie
-• geopolitiek
-• business
-• technologie
-• markten
-
-Vermijd:
-• sport
-• celebritynieuws
-• clickbait
-• kleine incidenten zonder bredere impact
-
-Nieuwsberichten:
+Nieuwsitems:
 {raw_news}
 """
 
     response = client.responses.create(
         model="gpt-4.1-mini",
         input=prompt,
-        max_output_tokens=1200,
+        max_output_tokens=1800,
     )
 
     return response.output_text.strip()

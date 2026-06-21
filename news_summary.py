@@ -29,7 +29,7 @@ load_dotenv(Path(__file__).parent / ".env")
 
 RSS_FEEDS = {
     "Financial Times": "https://www.ft.com/rss/home",
-    "Reuters Business": "https://www.reutersagency.com/feed/?best-topics=business-finance&post_type=best",
+    "McKinsey Insights": "https://www.mckinsey.com/insights/rss",
     "BBC Business": "https://feeds.bbci.co.uk/news/business/rss.xml",
     "The Economist": "https://www.economist.com/latest/rss.xml",
 }
@@ -70,42 +70,63 @@ def summarize_news(raw_news: str) -> str:
 
     today = datetime.now().strftime("%d-%m-%Y")
 
-    prompt = prompt = f"""
+    prompt = prompt = prompt = f"""
 Je bent mijn persoonlijke ochtendbriefing-assistent.
 
-Maak een duidelijke Nederlandse briefing op basis van de artikelen hieronder.
+Maak een cleane Nederlandse ochtendbriefing op basis van de artikelen hieronder.
 
-Focus vooral op:
-- economie
-- financiële markten
-- geopolitiek
-- technologie
-- bedrijven
-- beleid en centrale banken
+Gebruik exact deze structuur:
+
+📅 Ochtendbriefing — {today}
+
+IN 30 SECONDEN
+
+• [Eerste hoofdlijn in één zin]
+• [Tweede hoofdlijn in één zin]
+• [Derde hoofdlijn in één zin]
+
+TOP 5
+
+1. [Korte titel]
+[Leg in 1 tot 2 korte zinnen uit wat er is gebeurd.]
+Impact: [Leg in 1 korte zin uit waarom dit belangrijk is.]
+[Plaats hier alleen de URL, zonder markdown en zonder het woord Link]
+
+2. [Korte titel]
+[Leg in 1 tot 2 korte zinnen uit wat er is gebeurd.]
+Impact: [Leg in 1 korte zin uit waarom dit belangrijk is.]
+[Plaats hier alleen de URL, zonder markdown en zonder het woord Link]
+
+OM TE ONTHOUDEN
+
+• [Belangrijkste takeaway]
+• [Tweede takeaway]
+
+Strikte opmaakregels:
+- Gebruik geen markdown
+- Gebruik nooit ** of __
+- Gebruik geen streepjes als bullets
+- Gebruik alleen • als bullet
+- Gebruik geen [Link](url)
+- Gebruik niet het woord "Link:"
+- Zet de URL gewoon los op een aparte regel
+- Houd veel witruimte tussen secties
+- Schrijf rustig, zakelijk en simpel
+- Geen afsluiting zoals "Fijne dag"
+- Gebruik alleen informatie uit de aangeleverde artikelen
+
+Focus op:
+• economie
+• geopolitiek
+• business
+• technologie
+• markten
 
 Vermijd:
-- celebritynieuws
-- sport
-- clickbait
-- kleine incidenten zonder bredere impact
-
-Gebruik deze structuur:
-
-📅 Ochtendbriefing – {today}
-
-**Vandaag in het kort**
-Geef 3 bullets met de belangrijkste rode draad.
-
-**Belangrijkste ontwikkelingen**
-Kies maximaal 5 items.
-Per item:
-- korte titel
-- 2 zinnen uitleg
-- "Waarom dit belangrijk is:" 1 zin
-- link
-
-**Wat je moet onthouden**
-Sluit af met 2 kernpunten.
+• sport
+• celebritynieuws
+• clickbait
+• kleine incidenten zonder bredere impact
 
 Nieuwsberichten:
 {raw_news}

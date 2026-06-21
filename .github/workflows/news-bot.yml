@@ -1,4 +1,4 @@
-name: News Bot Scheduled Test
+name: News Bot
 
 on:
   workflow_dispatch:
